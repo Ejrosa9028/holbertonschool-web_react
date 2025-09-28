@@ -1,47 +1,67 @@
-// Definir la interfaz Student
-interface Student {
-    firstName: string;
-    lastName: string;
-    age: number;
+  interface Teacher {
+    readonly firstName: string;
+    readonly lastName: string;
+    fullTimeEmployee: boolean;
+    yearsOfExperience?: number;
     location: string;
+    [propName: string]: any;
   }
   
-  // Crea dos estudiantes
-  const student1: Student = {
+  interface Directors extends Teacher {
+    numberOfReports: number;
+  }
+  
+  const teacher3: Teacher = {
+    firstName: 'John',
+    fullTimeEmployee: false,
+    lastName: 'Doe',
+    location: 'London',
+    contract: false,
+  };
+  
+  console.log(teacher3);
+  
+  const director1: Directors = {
     firstName: 'John',
     lastName: 'Doe',
-    age: 20,
-    location: 'New York'
+    location: 'London',
+    fullTimeEmployee: true,
+    numberOfReports: 17,
   };
   
-  const student2: Student = {
-    firstName: 'Jane',
-    lastName: 'Smith',
-    age: 22,
-    location: 'Los Angeles'
+  console.log(director1);
+  
+  interface printTeacherFunction {
+    (firstName: string, lastName: string): string;
+  }
+  
+  const printTeacher: printTeacherFunction = (firstName, lastName) => {
+    return `${firstName.charAt(0)}. ${lastName}`;
   };
   
-  // Guardar students en un array
-  const studentsList: Student[] = [student1, student2];
+  console.log(printTeacher("John", "Doe")); // J. Doe
   
-  // Crear tabla
-  const table = document.createElement('table');
-  const tbody = document.createElement('tbody');
+  interface StudentClassConstructor {
+    new (firstName: string, lastName: string): StudentClassInterface;
+  }
   
-  // Llenar la tabla con los estudiantes
-  studentsList.forEach(student => {
-    const row = document.createElement('tr');
-    const firstNameCell = document.createElement('td');
-    const locationCell = document.createElement('td');
+  interface StudentClassInterface {
+    workOnHomework(): string;
+    displayName(): string;
+  }
   
-    firstNameCell.textContent = student.firstName;
-    locationCell.textContent = student.location;
+  class StudentClass implements StudentClassInterface {
+    constructor(public firstName: string, public lastName: string) {}
   
-    row.appendChild(firstNameCell);
-    row.appendChild(locationCell);
-    tbody.appendChild(row);
-  });
+    workOnHomework(): string {
+      return 'Currently working';
+    }
   
-  // Agregar el cuerpo a la tabla y luego al documento
-  table.appendChild(tbody);
-  document.body.appendChild(table);
+    displayName(): string {
+      return this.firstName;
+    }
+  }
+  
+  const student = new StudentClass('Jane', 'Doe');
+  console.log(student.displayName()); // Jane
+  console.log(student.workOnHomework()); // Currently working 
